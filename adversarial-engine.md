@@ -51,56 +51,70 @@ description: >
 
 ---
 
+## Output Protocol: Full Process Visibility
+
+> **The user must see the entire reasoning chain, not just the conclusion.**
+>
+> Trust comes from watching the argument unfold — seeing Red build its case,
+> seeing Blue tear it apart from independent premises, and seeing the
+> Reflection Layer find the hidden premise that neither side examined.
+> If the user only sees the Final Verdict, they have no basis to evaluate
+> whether the analysis was rigorous or whether the model took shortcuts.
+>
+> A conclusion without its derivation is an assertion. An assertion from
+> an LLM is worthless. The derivation IS the product.
+
+**Mandatory display rules:**
+
+1. **Every Red Team argument must be shown in full** — the argument itself,
+   the explicit assumption it rests on, and the reasoning connecting them.
+   Not bullet-point summaries. The user needs to see the logic chain to
+   judge whether the assumption is realistic.
+2. **Every Blue Team argument must be shown in full** — the argument,
+   the failure trigger, and the causal mechanism explaining WHY that
+   trigger causes failure. "It might fail" is not an argument.
+   "When X happens, Y breaks because Z" is.
+3. **Every Reflection Layer must be shown in full** — this is the most
+   important part to display. The Reflection Layer's value is in its
+   specific identification of the hidden premise. Show the reasoning:
+   what did Red assume? What did Blue assume? What do they BOTH assume
+   that neither tested? What is the redefined question?
+4. **The handoff between rounds must be explicit.** After each Reflection
+   Layer, state clearly: "The hidden premise exposed above becomes
+   Round N+1's input: [premise]." The user must be able to trace
+   the logical chain from Round 1 → 2 → 3.
+5. **Stage 2 decomposition must show its work.** Every evidence strength
+   tag (🟢🟡🔴) must be justified in one sentence. Every scenario branch
+   must show the causal chain from trigger to outcome, not just the
+   trigger and outcome.
+6. **Never collapse rounds.** Do not write "After three rounds of analysis,
+   the key finding is…" — that hides the process. Each round is
+   displayed separately with its full Red → Blue → Reflection structure.
+
+See `references/output-example.md` for a complete worked example showing
+the exact format and level of detail expected at every stage.
+
+Why full visibility matters: the user's ability to challenge, correct,
+and refine the analysis depends entirely on seeing HOW each conclusion
+was reached. An opaque pipeline that outputs confident conclusions is
+worse than no analysis at all — it creates false confidence instead of
+real understanding.
+
+---
+
 ## Workflow Overview
 
 ```
-User Input: topic / decision / project / strategy
-                    │
-                    ▼
-          ┌── Pre-check: Completeness ──┐
-          │  Ambiguous scope? → clarify  │
-          │  Clear enough? → proceed     │
-          └──────────┬──────────────────┘
-                     │
-    ╔════════════════╧════════════════════╗
-    ║  STAGE 1: ADVERSARIAL DIALECTIC     ║
-    ║                                     ║
-    ║  Round 1: Definition Layer          ║
-    ║  Red → Blue → Reflection            ║
-    ║  Output: the real question          ║
-    ║       + exposed hidden premise #1   ║
-    ║              │                      ║
-    ║  Round 2: Mechanism Layer           ║
-    ║  Red → Blue → Reflection            ║
-    ║  Output: key variables + thresholds ║
-    ║       + exposed hidden premise #2   ║
-    ║              │                      ║
-    ║  Round 3: Decision Layer            ║
-    ║  Red → Blue → Reflection            ║
-    ║  Output: conditional conclusions    ║
-    ╚════════════════╤════════════════════╝
-                     │
-          ┌──── Cognitive Reset ────┐
-          │  Stage 2 receives ONLY: │
-          │  • Key variables        │
-          │  • Conditional findings │
-          │  • Open questions       │
-          │  NOT raw Red/Blue text  │
-          └──────────┬─────────────┘
-                     │
-    ╔════════════════╧════════════════════╗
-    ║  STAGE 2: FIRST-PRINCIPLES ENGINE   ║
-    ║                                     ║
-    ║  For each key variable/finding:     ║
-    ║  2.1 Decompose into sub-claims      ║
-    ║  2.2 Tag evidence type + strength   ║
-    ║  2.3 Extract decision variables     ║
-    ║  2.4 Branch scenarios               ║
-    ║  2.5 Visualize (Mermaid/LaTeX)      ║
-    ╚════════════════╤════════════════════╝
-                     │
-                     ▼
-              Final Verdict
+User Input → Pre-check → STAGE 1 (3 rounds) → Cognitive Reset → STAGE 2 → Verdict
+
+STAGE 1: Round 1 (Definition) → Round 2 (Mechanism) → Round 3 (Decision)
+  Each round: Red → Blue → Reflection Layer
+  Reflection output → next round's input (ONLY pathway between rounds)
+
+COGNITIVE RESET: Stage 2 receives ONLY key variables + conditional findings
+  NOT raw Red/Blue argumentation text
+
+STAGE 2: Decompose → Tag evidence → Extract variables → Branch scenarios → Visualize
 ```
 
 **Critical constraint**: Information flows between rounds ONLY through
@@ -371,37 +385,11 @@ The Final Verdict is NOT a summary of what was said above.
 It is the **emergent insight** — the conclusion that no single
 round or stage could have produced alone.
 
-Structure:
-
-```
-## Core Discovery
-[1-2 paragraphs. The structural insight that emerged from three
- rounds of adversarial pressure + first-principles decomposition.
- This should surprise even someone who read all the rounds.]
-
-## Conditional Conclusions
-Scenario A: When [condition set A] holds
-→ [Specific recommendation + reasoning]
-
-Scenario B: When [condition set B] holds
-→ [Different recommendation + reasoning]
-
-(Scenario C if needed)
-
-## What We Know vs. What We Don't
-- Highest certainty: [claims supported by 🟢 evidence]
-- Highest uncertainty: [where 🔴 evidence dominates;
-  decision-maker must exercise judgment]
-
-## Verification Priorities (ranked by ROI)
-1. [Most impactful question to answer] → [Method to answer it]
-2. [Second most impactful] → [Method]
-3. ...
-
-## If You Decide to Proceed
-[Not "should you", but "if you do, here's the highest-leverage
- path to maximize upside while limiting downside"]
-```
+Required sections: Core Discovery (the structural surprise), Conditional
+Conclusions (scenario-specific recommendations), What We Know vs Don't
+(🟢/🟡/🔴 tagged), Verification Priorities (ranked by ROI), and
+If You Decide to Proceed (highest-leverage path).
+See `references/output-example.md` for the complete Final Verdict format.
 
 ---
 
