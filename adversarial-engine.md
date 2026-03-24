@@ -284,7 +284,15 @@ User input
   2. Which are fundamentally value judgments the decision-maker must own?
   3. What is the decision-maker's implicit framework? (Risk-seeking?
      Survival-first? Growth-optimizing? Optionality-maximizing?)
-- **Output**: Classified disagreements + conditional conclusion skeleton.
+- **Critical rule for value judgments**: If a disagreement is a value conflict,
+  do NOT produce a reconciling conclusion ("balance both", "both matter", etc.).
+  That is a refusal to analyze, not an analysis.
+  The correct output format:
+  > "This is a values conflict between [X] and [Y]. Data cannot resolve it.
+  > If [X] is the priority → [path A and its trade-offs].
+  > If [Y] is the priority → [path B and its trade-offs].
+  > The decision-maker must choose."
+- **Output**: Classified disagreements (data-resolvable vs. value judgments) + conditional conclusion skeleton.
 
 ---
 
@@ -458,6 +466,13 @@ See `references/output-example.md` for the complete Final Verdict format.
    "What is photosynthesis" does not need adversarial analysis.
    The pre-check exists to prevent this. Use the pipeline only when
    there is genuine uncertainty, competing values, or hidden complexity.
+7. **False neutrality on value conflicts.** When a disagreement is fundamentally
+   about competing values (efficiency vs. quality, growth vs. stability,
+   speed vs. safety), do not produce a "balance both" conclusion.
+   Name what each side is optimizing for. Present the conditional
+   recommendation for each value priority. "Both are important" is
+   not a conclusion — it is a placeholder for a conclusion the model
+   refused to construct.
 
 ---
 

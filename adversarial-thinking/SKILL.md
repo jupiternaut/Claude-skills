@@ -35,6 +35,10 @@ Apply to the current planning topic:
 - Rules:
   1. Ignore consensus — if everyone agrees, don't mention it
   2. Find contradictions: where Bull thinks feasible but Engineer says physically constrained; or Bull sees value but Bear says regulators will kill it
+  3. Label each contradiction's type:
+     - `事实性`：双方对同一事实判断相反（可通过数据验证）
+     - `假设性`：双方基于不同前提假设（需澄清哪个假设更接近现实）
+     - `价值性`：双方对同一事实赋予不同权重（数据无法解决，需决策者做价值判断）
 - Final output: A "Contradictions & Validation" list
 
 **Output Format:**
@@ -48,13 +52,17 @@ Apply to the current planning topic:
 - ⚙️ 工程师视角 (Engineer): [core constraints]
 
 ⚔️ 核心冲突与验证清单
-矛盾 1：[short title]
+矛盾 1：[short title]  [事实性/假设性/价值性]
 - 冲突点：多头声称 [X]；空头/工程师反驳 [Y]
-- ❓ 验证问题：[one concrete verifiable question a researcher must answer]
+- ❓ 下一步：
+  - 事实性/假设性矛盾：[一个可验证的具体问题]
+  - 价值性矛盾：此分歧属于价值判断，需决策者明确优先级——选择 [X] 还是 [Y]？分析无法替代这个决定。
 
 矛盾 2：…
 
-客观理性结论：[balanced conclusion]
+结论：
+  - 可解决分歧（事实/假设性）：[基于约束和证据的判断]
+  - 价值判断分歧（如存在）：[明确列出价值选择，不给调和结论。格式："若优先 [X]，则 [路径 A]；若优先 [Y]，则 [路径 B]。"]
 ```
 
 ---
